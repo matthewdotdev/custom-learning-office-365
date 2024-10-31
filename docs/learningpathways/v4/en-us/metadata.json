@@ -185,7 +185,17 @@
       "Image": "",
       "TechnologyId": "",
       "Source":"",
-      "SubCategories":[]
+      "SubCategories": [
+        {
+          "Id": "9bde32c3-2f0b-4201-b4a3-74cef2c8f61d",
+          "Name": "First days",
+          "Image": "images/categories/first_days.png",
+          "TechnologyId": "",
+          "SubjectId": "",
+          "Source": "Microsoft",
+          "SubCategories": []
+        }
+      ]
     }
   ],
   "Audiences": [
