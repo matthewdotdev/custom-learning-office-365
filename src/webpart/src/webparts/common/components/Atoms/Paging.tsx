@@ -81,8 +81,9 @@ export default class Paging extends React.Component<IPagingProps, IPagingState> 
           <li className={`pagination-item ${(showFirstMore) ? "" : "hidden"} `}>
             <button className="pagination-button" onClick={this.movePrevious}>&lt;&lt;</button>
           </li>
-
-          {this.props.pages && this.state.displayPages.map((page: number, idx) => {
+          {Logger.write(`🎓 M365LP:${this.LOG_SOURCE} (pagination) - ${this.props.pages}`, LogLevel.Error)}
+          {/* // Added a conditional check to ensure that pagination is only rendered if there are more than one page of results. This prevents unnecessary rendering of pagination elements when there is only a single page.*/}
+          {this.props.pages > 1 && this.state.displayPages.map((page: number, idx) => {
             return (
               <li key={idx} className={`pagination-item ${(page === -1) ? "hidden" : ""} `}>
                 <button className={`pagination-button ${(page === this.props.currentPage) ? "selected" : ""}`}
