@@ -9,6 +9,7 @@ export interface IHeaderPanelProps {
   linkUrl: string;
   alwaysShowSearch: boolean;
   closePanel: (panelName: string) => void;
+  currentPlaylistId?: string;
 }
 
 export default class HeaderPanel extends React.PureComponent<IHeaderPanelProps> {
@@ -25,7 +26,9 @@ export default class HeaderPanel extends React.PureComponent<IHeaderPanelProps> 
           {(this.props.panelOpen === "Search" || this.props.alwaysShowSearch) &&
             <SearchPanel
               panelOpen={this.props.panelOpen === "Search" || this.props.alwaysShowSearch}
-              closePanel={() => { this.props.closePanel("Search") }} />
+              closePanel={() => { this.props.closePanel("Search") }} 
+              currentPlaylistId={this.props.currentPlaylistId}
+            />
           }
           {this.props.panelOpen === "Link" &&
             <LinkPanel

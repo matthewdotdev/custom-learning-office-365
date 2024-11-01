@@ -15,6 +15,7 @@ export interface IPlaylistControlProps {
   assets: IAsset[];
   selectAsset: (assetId: string) => void;
   renderPanel: () => void;
+  currentPlaylistId?: string;
 }
 
 export interface IPlaylistControlState {

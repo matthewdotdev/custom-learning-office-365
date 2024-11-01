@@ -20,6 +20,7 @@ export interface ILearningHeaderProps {
   onAdminPlaylists: () => void;
   webpartTitle: string;
   alwaysShowSearch: boolean;
+  currentPlaylistId?: string;
 }
 
 export interface ILearningHeaderState {
@@ -95,6 +96,7 @@ export default class LearningHeader extends React.Component<ILearningHeaderProps
               closePanel={() => { this.setState({ panelOpen: "" }); }}
               linkUrl={this.props.linkUrl}
               alwaysShowSearch={this.props.alwaysShowSearch}
+              currentPlaylistId={this.props.currentPlaylistId}
             />
           }
         </div>

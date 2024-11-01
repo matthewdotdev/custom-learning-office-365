@@ -44,6 +44,7 @@ export interface ICustomLearningState {
   url: string;
   renderPanel: boolean;
   fullSizeAsset: boolean;
+  currentPlaylistId?: string;
 }
 
 export class CustomLearningState implements ICustomLearningState {
@@ -229,7 +230,7 @@ export default class CustomLearning extends React.Component<ICustomLearningProps
   private _loadDetail = (template: string, templateId: string, filterValue?: IFilter, assetId?: string): void => {
     try {
       let updateHistory: boolean = true;
-      let openInDialog: boolean = false;
+      let openInDialog: boolean = false;  
       if (!filterValue) {
         filterValue = new Filter();
       } else {
@@ -306,6 +307,9 @@ export default class CustomLearning extends React.Component<ICustomLearningProps
           }
           openInDialog = this.props.openAssetsInDialog
 
+          Logger.write(`🎓 M365LP:${this.LOG_SOURCE} (CustomLearning.tsx | _loadDetail) (currentPlaylistId) - ${detail.Id}`, LogLevel.Error);
+          //Setting currentPlaylistId
+          this.setState({ currentPlaylistId: detail.Id });
           break;
         case Templates.Asset:
           assets = [];
@@ -368,6 +372,10 @@ export default class CustomLearning extends React.Component<ICustomLearningProps
           console.log(`🎓 M365LP:${this.LOG_SOURCE} Length before: ${this._uxService.History.length}`);
           this._uxService.History.splice(idx, (this._uxService.History.length - idx));
           console.log(`🎓 M365LP:${this.LOG_SOURCE} Length after: ${this._uxService.History.length}`);
+          //If not in a specific playlist, setting playlist to null to ignore search filter
+          if(this._uxService.History.length === 0) {
+            this.setState({ currentPlaylistId: null });
+          }
         }
       }
       this._loadDetail(template, templateId);
@@ -526,6 +534,7 @@ export default class CustomLearning extends React.Component<ICustomLearningProps
           onAdminPlaylists={this._onAdminPlaylists}
           webpartTitle={this.props.webpartTitle}
           alwaysShowSearch={this.props.alwaysShowSearch}
+          currentPlaylistId={this.state.currentPlaylistId}
         />);
       }
       if ((this.state.template === Templates.Playlist)) {

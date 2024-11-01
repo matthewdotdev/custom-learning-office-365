@@ -65,3 +65,6 @@ typings/
 # ignore styleguide tmp folder
 .tmp
 .DS_Store
+src/webpart.7z
+src/webpart.zip
+src/webpart/src/webparts/customLearning.zip

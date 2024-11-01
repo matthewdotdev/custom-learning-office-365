@@ -1,3 +1,4 @@
+//This is UXService.ts from common/services
 import * as React from 'react';
 import { Logger, LogLevel } from '@pnp/logging';
 import includes from "lodash-es/includes";
@@ -25,7 +26,7 @@ export interface IUXService {
   FShowHistory: (idx: number, template: string, templateId: string, nav?: boolean) => void;
   FCLWPRender: {[key: string]: () => void};
   Init: (cacheController: ICacheController) => Promise<void>;
-  DoSearch: (searchValue: string) => ISearchResult[];
+  DoSearch: (searchValue: string, currentPlaylistId?: string) => ISearchResult[];
   LoadSearchResultAsset: (subcategoryId: string, playlistId: string, assetId: string) => void;
   LoadHistory: (idx: number, template: string, templateId: string, nav?: boolean) => void;
   UpdateCustomSort: (customSortOrder: string[]) => void;
@@ -149,9 +150,10 @@ export class UXService implements IUXService {
     return retArray;
   }
 
-  public DoSearch(searchValue: string): ISearchResult[] {
+  public DoSearch(searchValue: string, currentPlaylistId?: string): ISearchResult[] {
     let retVal: ISearchResult[] = [];
     try {
+      Logger.write(`🎓 M365LP:${this.LOG_SOURCE} (doSearch) (currentPlaylistId) - ${currentPlaylistId}`, LogLevel.Error);
       if (searchValue.length > 0) {
         //Matching technologies and subjects
         const technologies: string[] = [];
@@ -181,6 +183,9 @@ export class UXService implements IUXService {
           return (includes(subjects, o.SubjectId));
         });
         spAsset = spAsset.concat(spAssetSub);
+        
+
+
         //Filter Assets by search fields
         for (let i = 0; i < SearchFields.length; i++) {
           const spField = this._cacheController.cacheConfig.CachedAssets.filter(o => {
@@ -188,6 +193,14 @@ export class UXService implements IUXService {
             return (o[SearchFields[i]].toLowerCase().indexOf(searchValue.toLowerCase()) > -1);
           });
           spAsset = spAsset.concat(spField);
+
+          // If we are within a specific playlist, filter assets accordingly
+          spAsset = spAsset.filter(asset => {
+              Logger.write(`🎓 M365LP:${this.LOG_SOURCE} (doSearch) (playlist filtering) - ${currentPlaylistId}`, LogLevel.Error);
+              const parentPlaylists = this._cacheController.cacheConfig.CachedPlaylists.filter(pl => pl.Assets.includes(asset.Id));
+              return parentPlaylists.some(pl => pl.Id === currentPlaylistId);
+            });
+
           const spAssetResults: ISearchResult[] = [];
           spAsset.forEach((a) => {
             const parent: IPlaylist[] = this._cacheController.cacheConfig.CachedPlaylists.filter(o => (o.Assets.indexOf(a.Id) > -1));
@@ -219,6 +232,10 @@ export class UXService implements IUXService {
           spPlay = spPlay.concat(spField);
           const spPlayResults: ISearchResult[] = [];
           spPlay.forEach((pl) => {
+            // If we are within a specific playlist, ensure we only include that playlist
+            if (currentPlaylistId && pl.Id !== currentPlaylistId) {
+              return;
+            }
             const parent: ICategory = find(flatSubCategories, { Id: pl.CatId });
             if (parent) {
               const result: ISearchResult = { Result: pl, Parent: parent, Type: Templates.Playlist };

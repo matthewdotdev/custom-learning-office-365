@@ -13,6 +13,7 @@ import { UXServiceContext } from '../../../common/services/UXService';
 export interface ISearchPanelProps {
   panelOpen: boolean;
   closePanel: () => void;
+  currentPlaylistId: string; 
 }
 
 export interface ISearchPanelState {
@@ -23,7 +24,7 @@ export interface ISearchPanelState {
 export class SearchPanelState implements ISearchPanelState {
   constructor(
     public searchValue: string = "",
-    public searchResults: ISearchResult[] = []
+    public searchResults: ISearchResult[] = [],
   ) { }
 }
 
@@ -63,7 +64,7 @@ export default class SearchPanel extends React.PureComponent<ISearchPanelProps, 
         this.setState({ searchValue }, () => {
           if (searchValue.length > 0) {
             this._debounceTypeahead(() => {
-              const searchResults = this._uxService.DoSearch(searchValue);
+              const searchResults = this._uxService.DoSearch(searchValue,this.props.currentPlaylistId);
               this.setState({ searchResults });
             }, 500);
           } else {
@@ -72,7 +73,7 @@ export default class SearchPanel extends React.PureComponent<ISearchPanelProps, 
         });
       } else {
         if (searchValue.length > 0) {
-          const searchResults = this._uxService.DoSearch(searchValue);
+          const searchResults = this._uxService.DoSearch(searchValue, this.props.currentPlaylistId);
           this.setState({ searchResults });
         } else {
           this.setState({ searchResults: [] });
