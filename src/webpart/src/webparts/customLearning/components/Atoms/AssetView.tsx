@@ -4,7 +4,7 @@ import { Logger, LogLevel } from '@pnp/logging';
 import isEqual from "lodash-es/isEqual";
 import includes from "lodash-es/includes";
 
-import { IAsset } from '../../../common/models/Models';
+import { IAsset, IMultilingualString } from '../../../common/models/Models';
 import styles from "../../../common/CustomLearningCommon.module.scss";
 import { CustomWebpartSource } from '../../../common/models/Enums';
 import { AppInsightsService } from '../../../common/services/AppInsightsService';
@@ -214,7 +214,14 @@ export default class AssetView extends React.Component<IAssetViewProps, IAssetVi
 
   public render(): React.ReactElement<IAssetViewProps> {
     try {
+      
       if (!this.props.asset) { return null; }
+      const checkForIgnore = (variable: string | null): boolean => {
+        return variable ? variable.includes("_ignoreAsSubCategory") : false;
+      };
+
+      if(checkForIgnore(this.props.asset.Url as string)) {return null;}
+      
       return (
         <div
           data-component={this.LOG_SOURCE}
