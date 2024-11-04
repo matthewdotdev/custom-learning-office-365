@@ -52,6 +52,14 @@ module.exports = function (Handlebars) {
     }
   });
 
+  Handlebars.registerHelper('startsWith', function(value, prefix, options) {
+    if (typeof value === 'string' && value.startsWith(prefix)) {
+      return options.fn(this);
+    } else {
+      return options.inverse(this);
+    }
+  });
+
   Handlebars.registerHelper('h1Title', function (value) {
 
     if (value) {

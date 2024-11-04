@@ -38,7 +38,7 @@ $baseFolder: '../../../../node_modules/';
 
 .customLearning {
 	:global {
-		@include meta.load-css('#{$baseFolder}learning-pathways-styleguide/source/css/main.spfx');
+		@include meta.load-css('../../../../styleguide/source/css/main.spfx.css');
 	}
 
 	font-family: "Segoe UI",

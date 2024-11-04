@@ -9,6 +9,7 @@ import HOODropDown from "@n8d/htwoo-react/HOODropDown";
 
 import * as strings from "M365LPStrings";
 import { IAsset } from "../../../common/models/Models";
+import { startsWith } from "lodash-es";
 
 export interface IPlaylistControlProps {
   currentAsset: IAsset;
@@ -44,7 +45,13 @@ export default class PlaylistControl extends React.Component<IPlaylistControlPro
   private getAssetOptions(assets: IAsset[]): IHOODropDownItem[] {
     const assetOptions: IHOODropDownItem[] = [];
     for (let i = 0; i < assets.length; i++) {
-      assetOptions.push({ key: assets[i].Id.toString(), text: assets[i].Title as string, disabled: false });
+      if (startsWith(assets[i].Title as string, "---")) { 
+        assetOptions.push({ key: assets[i].Id.toString(), text: assets[i].Title as string, disabled: true }) 
+      }
+      else {
+        assetOptions.push({ key: assets[i].Id.toString(), text: assets[i].Title as string, disabled: false });
+      }
+      
     }
     return assetOptions;
   }
@@ -112,7 +119,7 @@ export default class PlaylistControl extends React.Component<IPlaylistControlPro
 
   public render(): React.ReactElement<IPlaylistControlProps> {
     if (!this.props.currentAsset) return null;
-    try {
+   try {
       return (
         <div data-component={this.LOG_SOURCE} className="playerwrapper">
           <div className="playerctrl">

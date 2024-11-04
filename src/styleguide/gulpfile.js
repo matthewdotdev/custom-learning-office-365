@@ -104,3 +104,4 @@ exports.default = serve;
 exports.styles = styles;
 exports.docs = docs;
 exports.pluginCSSOverride = pluginCSSOverride;
+exports.pluginJSOverride = pluginJSOverride
