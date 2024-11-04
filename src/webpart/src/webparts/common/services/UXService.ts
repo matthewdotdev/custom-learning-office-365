@@ -28,7 +28,7 @@ export interface IUXService {
   FCLWPRender: {[key: string]: () => void};
   Init: (cacheController: ICacheController) => Promise<void>;
   DoSearch: (searchValue: string, currentPlaylistId?: string) => ISearchResult[];
-  DoSearch: (searchValue: string, currentPlaylistId?: string) => ISearchResult[];
+  //DoSearch: (searchValue: string, currentPlaylistId?: string) => ISearchResult[];
   LoadSearchResultAsset: (subcategoryId: string, playlistId: string, assetId: string) => void;
   LoadHistory: (idx: number, template: string, templateId: string, nav?: boolean) => void;
   UpdateCustomSort: (customSortOrder: string[]) => void;
@@ -152,7 +152,7 @@ export class UXService implements IUXService {
     return retArray;
   }
 
-  public DoSearch(searchValue: string, currentPlaylistId?: string): ISearchResult[] {
+  //public DoSearch(searchValue: string, currentPlaylistId?: string): ISearchResult[] {
   public DoSearch(searchValue: string, currentPlaylistId?: string): ISearchResult[] {
     let retVal: ISearchResult[] = [];
     try {
