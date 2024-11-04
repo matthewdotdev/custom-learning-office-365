@@ -16,10 +16,7 @@
         </ul>
     </li>
     {{ else }}
-    {{#startsWith value "---"}}
-        <li data-value="{{ key }}" class="hoo-option {{ disabled }}" style"pointer-events:none">{{ value }}</li>
-    {{else}}
-        <li data-value="{{ key }}" class="hoo-option {{ disabled }}" style"">{{ value }}</li>
+        <li data-value="{{ key }}" class="hoo-option {{ disabled }}" style="">{{ value }}</li>
     {{/if}}
     {{/each }}
 </ul>
